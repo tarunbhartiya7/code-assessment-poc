@@ -21,7 +21,12 @@ testSchema.pre('save', function (next) {
 })
 
 testSchema.pre(/^find/, function (next) {
-  this.populate('skills')
+  this.populate('skills').populate({
+    path: 'skills',
+    populate: {
+      path: 'questions',
+    },
+  })
 
   next()
 })
