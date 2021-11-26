@@ -36,8 +36,8 @@ const typeDefs = gql`
   }
 
   enum Role {
-    admin
-    user
+    Admin
+    User
   }
 
   enum QuestionType {
@@ -130,7 +130,7 @@ const resolvers = {
         throw new AuthenticationError('Not authenticated')
       }
 
-      if (currentUser.role !== 'admin') {
+      if (currentUser.role !== 'Admin') {
         throw new UserInputError('You do not have required permission!')
       }
 
@@ -163,7 +163,7 @@ const resolvers = {
         throw new AuthenticationError('Not authenticated')
       }
 
-      if (currentUser.role !== 'admin') {
+      if (currentUser.role !== 'Admin') {
         throw new UserInputError('You do not have required permission!')
       }
 
@@ -176,7 +176,7 @@ const resolvers = {
   },
   Mutation: {
     createUser: (root, { name, email, password, role }) => {
-      if (role === 'admin') {
+      if (role === 'Admin') {
         throw new UserInputError(
           'You do not have permission to create this user!'
         )
@@ -221,7 +221,7 @@ const resolvers = {
         throw new AuthenticationError('Not authenticated')
       }
 
-      if (currentUser.role !== 'admin') {
+      if (currentUser.role !== 'Admin') {
         throw new UserInputError('You do not have required permission!')
       }
 
@@ -241,7 +241,7 @@ const resolvers = {
         throw new AuthenticationError('Not authenticated')
       }
 
-      if (currentUser.role !== 'admin') {
+      if (currentUser.role !== 'Admin') {
         throw new UserInputError('You do not have required permission!')
       }
 
@@ -255,7 +255,7 @@ const resolvers = {
         throw new AuthenticationError('Not authenticated')
       }
 
-      if (currentUser.role !== 'admin') {
+      if (currentUser.role !== 'Admin') {
         throw new UserInputError('You do not have required permission!')
       }
 
