@@ -85,8 +85,6 @@ const typeDefs = gql`
   type Assessment {
     score: Int!
     status: Status!
-    test: Test!
-    user: User!
   }
 
   type Query {
