@@ -32,7 +32,7 @@ const typeDefs = gql`
   }
 
   type LoginResult {
-    value: String!
+    token: String!
     name: String!
     email: String!
     role: Role!
@@ -87,7 +87,7 @@ const resolvers = {
         id: _id,
       }
 
-      return { value: jwt.sign(userForToken, JWT_SECRET), name, email, role }
+      return { token: jwt.sign(userForToken, JWT_SECRET), name, email, role }
     },
   },
 }
