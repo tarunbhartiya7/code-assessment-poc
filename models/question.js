@@ -25,6 +25,11 @@ const QuestionSchema = new mongoose.Schema({
   correctOption: {
     type: String,
   },
+  skill: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Skill',
+    required: [true, 'Question must belong to a Skill'],
+  },
 })
 
 QuestionSchema.pre('save', async function (next) {

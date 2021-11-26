@@ -13,15 +13,9 @@ const skillSchema = new mongoose.Schema({
     type: Number,
     default: 15,
   },
-  questions: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Question',
-    },
-  ],
 })
 
-skillSchema.pre('save', async function (next) {
+skillSchema.pre('save', function (next) {
   if (this.noOfQuestions.length !== this.questions.length) {
     throw new ValidationError(
       'Number of questions should be equal to the questions'
@@ -29,6 +23,12 @@ skillSchema.pre('save', async function (next) {
   }
 
   next()
+})
+
+skillSchema.virtual('questions', {
+  ref: 'Question',
+  foreignField: 'skill',
+  localField: '_id',
 })
 
 module.exports = mongoose.model('Skill', skillSchema)

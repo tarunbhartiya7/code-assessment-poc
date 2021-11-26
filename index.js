@@ -114,6 +114,7 @@ const typeDefs = gql`
       type: QuestionType
       options: [String!]
       correctOption: String
+      skillId: ID!
     ): Question
     createTest(name: String!, skills: [ID!]!): Test
     createAssessment(status: Status!, testId: ID!, userId: ID!): Assessment
@@ -234,7 +235,7 @@ const resolvers = {
 
     createQuestion: (
       root,
-      { title, type, options, correctOption },
+      { title, type, options, correctOption, skillId },
       { currentUser }
     ) => {
       if (!currentUser) {
@@ -245,7 +246,13 @@ const resolvers = {
         throw new UserInputError('You do not have required permission!')
       }
 
-      const question = new Question({ title, type, options, correctOption })
+      const question = new Question({
+        title,
+        type,
+        options,
+        correctOption,
+        skill: skillId,
+      })
 
       return question.save()
     },

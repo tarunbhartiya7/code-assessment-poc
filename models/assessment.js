@@ -15,12 +15,12 @@ const assessmentSchema = new mongoose.Schema({
   test: {
     type: mongoose.Schema.ObjectId,
     ref: 'Test',
-    // required: [true, 'Assessment must belong to a Test'],
+    required: [true, 'Assessment must belong to a Test'],
   },
   user: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
-    // required: [true, 'Assessment must belong to a User'],
+    required: [true, 'Assessment must belong to a User'],
   },
 })
 
