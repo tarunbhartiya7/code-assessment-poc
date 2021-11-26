@@ -31,8 +31,11 @@ const typeDefs = gql`
     user
   }
 
-  type Token {
+  type LoginResult {
     value: String!
+    name: String!
+    email: String!
+    role: Role!
   }
 
   type Query {
@@ -46,7 +49,7 @@ const typeDefs = gql`
       password: String!
       role: Role
     ): User
-    login(email: String!, password: String!): Token
+    login(email: String!, password: String!): LoginResult
   }
 `
 
@@ -77,12 +80,14 @@ const resolvers = {
         throw new UserInputError('wrong credentials')
       }
 
+      const { _id, name, role } = user
+
       const userForToken = {
         email,
-        id: user._id,
+        id: _id,
       }
 
-      return { value: jwt.sign(userForToken, JWT_SECRET) }
+      return { value: jwt.sign(userForToken, JWT_SECRET), name, email, role }
     },
   },
 }
