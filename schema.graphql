@@ -46,23 +46,13 @@ type Skill {
 type Test {
   id: ID!
   name: String!
-  skills: [Skill!]!
+  skills: [Skill!]
   testId: String!
 }
 
 type Assessment {
-  score: Int!
+  score: Int
   status: Status!
-}
-
-type NewAssessment {
-  status: Status!
-}
-
-type NewTest {
-  id: ID!
-  name: String!
-  testId: String!
 }
 
 input UserInput {
@@ -72,7 +62,12 @@ input UserInput {
 
 type Query {
   me: User
-  getAllAssessments(status: Status, score: Int): [Assessment!]
+  getAllAssessments(
+    status: Status
+    score: Int
+    page: Int
+    limit: Int
+  ): [Assessment!]
   getAllTests(testId: String): [Test!]
   getAllSkills(skillId: String): [Skill!]
 }
@@ -88,13 +83,13 @@ type Mutation {
     correctOption: String
     skillId: ID!
   ): Question
-  createTest(name: String!, skills: [ID!]!): NewTest
+  createTest(name: String!, skills: [ID!]!): Test
   createAssessment(
     status: Status!
     testId: ID!
     userId: ID!
     userInput: [UserInput!]
-  ): NewAssessment
-  editTest(id: ID!, testName: String!, skills: [ID!]!): NewTest
-  editAssessment(id: ID!, status: Status!): NewAssessment
+  ): Assessment
+  editTest(id: ID!, testName: String!, skills: [ID!]!): Test
+  editAssessment(id: ID!, status: Status!): Assessment
 }

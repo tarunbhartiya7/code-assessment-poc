@@ -7,8 +7,19 @@ const Query = {
   me: (root, args, context) => {
     return context.currentUser
   },
-  getAllAssessments: (root, { status, score }, { currentUser }) => {
+  getAllAssessments: (
+    root,
+    { status, score, page, limit },
+    { currentUser }
+  ) => {
     checkAuthorized(currentUser)
+
+    if (page && limit) {
+      let p = page * 1 || 1
+      let l = limit * 1 || 100
+      let skip = (p - 1) * l
+      return Assessment.find({}).skip(skip).limit(l).exec()
+    }
 
     if (status) {
       return Assessment.find({ status }).exec()
