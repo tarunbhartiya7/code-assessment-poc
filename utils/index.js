@@ -1,3 +1,5 @@
+const { UserInputError, AuthenticationError } = require('apollo-server')
+
 const config = require('./config')
 const {
   JWT_SECRET,
@@ -34,8 +36,19 @@ const connectToDatabase = () => {
     })
 }
 
+const checkAuthorized = (user) => {
+  if (!user) {
+    throw new AuthenticationError('Not authenticated')
+  }
+
+  if (user.role !== 'Admin') {
+    throw new UserInputError('You do not have required permission!')
+  }
+}
+
 module.exports = {
   createToken,
   verifyToken,
   connectToDatabase,
+  checkAuthorized,
 }

@@ -1,21 +1,14 @@
-const { UserInputError, AuthenticationError } = require('apollo-server')
-
 const Assessment = require('../models/assessment')
 const Test = require('../models/test')
 const Skill = require('../models/skill')
+const { checkAuthorized } = require('../utils')
 
 const Query = {
   me: (root, args, context) => {
     return context.currentUser
   },
   getAllAssessments: (root, { status, score }, { currentUser }) => {
-    if (!currentUser) {
-      throw new AuthenticationError('Not authenticated')
-    }
-
-    if (currentUser.role !== 'Admin') {
-      throw new UserInputError('You do not have required permission!')
-    }
+    checkAuthorized(currentUser)
 
     if (status) {
       return Assessment.find({ status }).exec()
@@ -42,13 +35,7 @@ const Query = {
     // }
   },
   getAllTests: (root, { testId }, { currentUser }) => {
-    if (!currentUser) {
-      throw new AuthenticationError('Not authenticated')
-    }
-
-    if (currentUser.role !== 'Admin') {
-      throw new UserInputError('You do not have required permission!')
-    }
+    checkAuthorized(currentUser)
 
     if (testId) {
       return Test.find({ testId }).exec()
@@ -58,13 +45,7 @@ const Query = {
   },
 
   getAllSkills: (root, { skillId }, { currentUser }) => {
-    if (!currentUser) {
-      throw new AuthenticationError('Not authenticated')
-    }
-
-    if (currentUser.role !== 'Admin') {
-      throw new UserInputError('You do not have required permission!')
-    }
+    checkAuthorized(currentUser)
 
     if (skillId) {
       return Skill.find({ skillId }).exec()

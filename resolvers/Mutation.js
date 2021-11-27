@@ -1,4 +1,4 @@
-const { UserInputError, AuthenticationError } = require('apollo-server')
+const { UserInputError } = require('apollo-server')
 const bcrypt = require('bcryptjs')
 
 const User = require('../models/user')
@@ -6,7 +6,7 @@ const Skill = require('../models/skill')
 const Question = require('../models/question')
 const Assessment = require('../models/assessment')
 const Test = require('../models/test')
-const { createToken } = require('../utils')
+const { createToken, checkAuthorized } = require('../utils')
 
 const Mutation = {
   createUser: (root, { name, email, password, role }) => {
@@ -18,9 +18,7 @@ const Mutation = {
 
     const user = new User({ name, email, password, role })
 
-    return user.save().catch((error) => {
-      throw new UserInputError(error.message)
-    })
+    return user.save()
   },
 
   login: async (root, { email, password }) => {
@@ -47,13 +45,7 @@ const Mutation = {
   },
 
   createSkill: (root, { name, description }, { currentUser }) => {
-    if (!currentUser) {
-      throw new AuthenticationError('Not authenticated')
-    }
-
-    if (currentUser.role !== 'Admin') {
-      throw new UserInputError('You do not have required permission!')
-    }
+    checkAuthorized(currentUser)
 
     const skill = new Skill({ name, description })
 
@@ -65,13 +57,7 @@ const Mutation = {
     { title, type, options, correctOption, skillId },
     { currentUser }
   ) => {
-    if (!currentUser) {
-      throw new AuthenticationError('Not authenticated')
-    }
-
-    if (currentUser.role !== 'Admin') {
-      throw new UserInputError('You do not have required permission!')
-    }
+    checkAuthorized(currentUser)
 
     const question = new Question({
       title,
@@ -85,13 +71,7 @@ const Mutation = {
   },
 
   createTest: (root, { name, skills }, { currentUser }) => {
-    if (!currentUser) {
-      throw new AuthenticationError('Not authenticated')
-    }
-
-    if (currentUser.role !== 'Admin') {
-      throw new UserInputError('You do not have required permission!')
-    }
+    checkAuthorized(currentUser)
 
     const test = new Test({ name, skills })
 
@@ -100,13 +80,7 @@ const Mutation = {
 
   createAssessment: (root, { status, testId, userId }, { currentUser }) => {
     // TODO: write logic for calculating score
-    if (!currentUser) {
-      throw new AuthenticationError('Not authenticated')
-    }
-
-    if (currentUser.role !== 'Admin') {
-      throw new UserInputError('You do not have required permission!')
-    }
+    checkAuthorized(currentUser)
 
     const assessment = new Assessment({
       status,
@@ -119,13 +93,7 @@ const Mutation = {
   },
 
   editTest: async (root, { id, testName, skills }, { currentUser }) => {
-    if (!currentUser) {
-      throw new AuthenticationError('Not authenticated')
-    }
-
-    if (currentUser.role !== 'Admin') {
-      throw new UserInputError('You do not have required permission!')
-    }
+    checkAuthorized(currentUser)
 
     try {
       return await Test.findByIdAndUpdate(
@@ -142,13 +110,7 @@ const Mutation = {
   },
 
   editAssessment: async (root, { id, status }, { currentUser }) => {
-    if (!currentUser) {
-      throw new AuthenticationError('Not authenticated')
-    }
-
-    if (currentUser.role !== 'Admin') {
-      throw new UserInputError('You do not have required permission!')
-    }
+    checkAuthorized(currentUser)
 
     try {
       return await Assessment.findByIdAndUpdate(

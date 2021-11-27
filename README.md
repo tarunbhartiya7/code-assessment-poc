@@ -1,4 +1,5 @@
 # Run server
 
 npm install
-npm start
+npm run dev - to start with file watcher
+npm start - to start without
