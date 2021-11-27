@@ -48,6 +48,7 @@ type Test {
   name: String!
   skills: [Skill!]
   testId: String!
+  noOfApplicants: Int
 }
 
 type Assessment {

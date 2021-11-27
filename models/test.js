@@ -10,6 +10,10 @@ const testSchema = new mongoose.Schema({
     unique: true,
   },
   testId: String,
+  noOfApplicants: {
+    type: Number,
+    default: 0,
+  },
   skills: [
     {
       type: mongoose.Schema.ObjectId,
