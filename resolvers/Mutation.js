@@ -78,7 +78,11 @@ const Mutation = {
     return test.save()
   },
 
-  createAssessment: (root, { status, testId, userId }, { currentUser }) => {
+  createAssessment: (
+    root,
+    { status, testId, userId, userInput },
+    { currentUser }
+  ) => {
     // TODO: write logic for calculating score
     checkAuthorized(currentUser)
 
@@ -86,7 +90,7 @@ const Mutation = {
       status,
       test: testId,
       user: userId,
-      score: 3,
+      userInput,
     })
 
     return assessment.save()

@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 const assessmentSchema = new mongoose.Schema({
   score: {
     type: Number,
-    required: [true, 'Score is required for assessment'],
     min: [1, 'Score must be above 1'],
     max: [5, 'Score must be below 5'],
   },
@@ -22,6 +21,12 @@ const assessmentSchema = new mongoose.Schema({
     ref: 'User',
     required: [true, 'Assessment must belong to a User'],
   },
+  userInput: [
+    {
+      questionId: mongoose.Schema.ObjectId,
+      answer: String,
+    },
+  ],
 })
 
 assessmentSchema.pre(/^find/, function (next) {

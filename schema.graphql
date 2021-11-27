@@ -65,6 +65,11 @@ type NewTest {
   testId: String!
 }
 
+input UserInput {
+  questionId: ID!
+  answer: String!
+}
+
 type Query {
   me: User
   getAllAssessments(status: Status, score: Int): [Assessment!]
@@ -84,7 +89,12 @@ type Mutation {
     skillId: ID!
   ): Question
   createTest(name: String!, skills: [ID!]!): NewTest
-  createAssessment(status: Status!, testId: ID!, userId: ID!): NewAssessment
+  createAssessment(
+    status: Status!
+    testId: ID!
+    userId: ID!
+    userInput: [UserInput!]
+  ): NewAssessment
   editTest(id: ID!, testName: String!, skills: [ID!]!): NewTest
   editAssessment(id: ID!, status: Status!): NewAssessment
 }
