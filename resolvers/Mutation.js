@@ -46,11 +46,7 @@ const Mutation = {
     }
   },
 
-  createSkill: (
-    root,
-    { name, description, noOfQuestions, questions },
-    { currentUser }
-  ) => {
+  createSkill: (root, { name, description }, { currentUser }) => {
     if (!currentUser) {
       throw new AuthenticationError('Not authenticated')
     }
@@ -59,11 +55,9 @@ const Mutation = {
       throw new UserInputError('You do not have required permission!')
     }
 
-    const skill = new Skill({ name, description, noOfQuestions, questions })
+    const skill = new Skill({ name, description })
 
-    skill.save()
-
-    return skill.populate('questions')
+    return skill.save()
   },
 
   createQuestion: (
@@ -101,9 +95,7 @@ const Mutation = {
 
     const test = new Test({ name, skills })
 
-    test.save()
-
-    return test.populate('skills')
+    return test.save()
   },
 
   createAssessment: (root, { status, testId, userId }) => {

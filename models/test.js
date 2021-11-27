@@ -5,6 +5,7 @@ const testSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'Name is required'],
+    unique: true,
   },
   testId: String,
   skills: [
@@ -25,6 +26,7 @@ testSchema.pre(/^find/, function (next) {
     path: 'skills',
     populate: {
       path: 'questions',
+      perDocumentLimit: 10,
     },
   })
 

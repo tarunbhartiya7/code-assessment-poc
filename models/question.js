@@ -24,6 +24,7 @@ const QuestionSchema = new mongoose.Schema({
   },
   correctOption: {
     type: String,
+    select: false,
   },
   skill: {
     type: mongoose.Schema.ObjectId,

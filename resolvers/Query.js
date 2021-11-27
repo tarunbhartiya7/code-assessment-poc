@@ -2,6 +2,7 @@ const { UserInputError, AuthenticationError } = require('apollo-server')
 
 const Assessment = require('../models/assessment')
 const Test = require('../models/test')
+const Skill = require('../models/skill')
 
 const Query = {
   me: (root, args, context) => {
@@ -54,6 +55,22 @@ const Query = {
     }
 
     return Test.find({}).exec()
+  },
+
+  getAllSkills: (root, { skillId }, { currentUser }) => {
+    if (!currentUser) {
+      throw new AuthenticationError('Not authenticated')
+    }
+
+    if (currentUser.role !== 'Admin') {
+      throw new UserInputError('You do not have required permission!')
+    }
+
+    if (skillId) {
+      return Skill.find({ skillId }).exec()
+    }
+
+    return Skill.find({}).exec()
   },
 }
 

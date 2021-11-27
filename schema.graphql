@@ -41,8 +41,7 @@ type Skill {
   id: ID!
   name: String!
   description: String!
-  noOfQuestions: Int!
-  questions: [Question!]!
+  questions: [Question!]
 }
 
 type Test {
@@ -57,21 +56,27 @@ type Assessment {
   status: Status!
 }
 
+type NewAssessment {
+  status: Status!
+}
+
+type NewTest {
+  id: ID!
+  name: String!
+  testId: String!
+}
+
 type Query {
   me: User
   getAllAssessments(status: Status, score: Int): [Assessment!]
   getAllTests(testId: String): [Test!]
+  getAllSkills(skillId: String): [Skill!]
 }
 
 type Mutation {
   createUser(name: String!, email: String!, password: String!, role: Role): User
   login(email: String!, password: String!): LoginResult
-  createSkill(
-    name: String!
-    description: String!
-    noOfQuestions: Int
-    questions: [ID!]!
-  ): Skill
+  createSkill(name: String!, description: String!): Skill
   createQuestion(
     title: String!
     type: QuestionType
@@ -79,6 +84,6 @@ type Mutation {
     correctOption: String
     skillId: ID!
   ): Question
-  createTest(name: String!, skills: [ID!]!): Test
-  createAssessment(status: Status!, testId: ID!, userId: ID!): Assessment
+  createTest(name: String!, skills: [ID!]!): NewTest
+  createAssessment(status: Status!, testId: ID!, userId: ID!): NewAssessment
 }
