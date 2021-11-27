@@ -120,7 +120,7 @@ const Mutation = {
   },
 
   editAssessment: async (root, { id, status, userInput }, { currentUser }) => {
-    checkAdmin(currentUser)
+    checkLoggedIn(currentUser)
 
     let correct = 0
 
