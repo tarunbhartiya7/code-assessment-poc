@@ -6,7 +6,7 @@ const Skill = require('../models/skill')
 const Question = require('../models/question')
 const Assessment = require('../models/assessment')
 const Test = require('../models/test')
-const { createToken, checkAuthorized } = require('../utils')
+const { createToken, checkAuthorized, checkAuthenticated } = require('../utils')
 
 const Mutation = {
   createUser: (root, { name, email, password, role }) => {
@@ -84,7 +84,7 @@ const Mutation = {
     { currentUser }
   ) => {
     // TODO: write logic for calculating score
-    checkAuthorized(currentUser)
+    checkAuthenticated(currentUser)
 
     const assessment = new Assessment({
       status,
