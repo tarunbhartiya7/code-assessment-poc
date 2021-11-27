@@ -1,0 +1,84 @@
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  role: Role
+}
+
+enum Role {
+  Admin
+  User
+}
+
+enum QuestionType {
+  MCQ
+  Coding
+}
+
+enum Status {
+  Not
+  Started
+  Completed
+}
+
+type LoginResult {
+  id: ID!
+  token: String!
+  name: String!
+  email: String!
+  role: Role!
+}
+
+type Question {
+  id: ID!
+  title: String!
+  type: QuestionType
+  options: [String!]
+  correctOption: String
+}
+
+type Skill {
+  id: ID!
+  name: String!
+  description: String!
+  noOfQuestions: Int!
+  questions: [Question!]!
+}
+
+type Test {
+  id: ID!
+  name: String!
+  skills: [Skill!]!
+  testId: String!
+}
+
+type Assessment {
+  score: Int!
+  status: Status!
+}
+
+type Query {
+  me: User
+  getAllAssessments(status: Status, score: Int): [Assessment!]
+  getAllTests(testId: String): [Test!]
+}
+
+type Mutation {
+  createUser(name: String!, email: String!, password: String!, role: Role): User
+  login(email: String!, password: String!): LoginResult
+  createSkill(
+    name: String!
+    description: String!
+    noOfQuestions: Int
+    questions: [ID!]!
+  ): Skill
+  createQuestion(
+    title: String!
+    type: QuestionType
+    options: [String!]
+    correctOption: String
+    skillId: ID!
+  ): Question
+  createTest(name: String!, skills: [ID!]!): Test
+  createAssessment(status: Status!, testId: ID!, userId: ID!): Assessment
+}

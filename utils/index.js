@@ -10,7 +10,7 @@ const {
 const jwt = require('jsonwebtoken')
 
 const createToken = (id) =>
-  jwt.sign({ id }, JWT_SECRET, {
+  jwt.sign(id, JWT_SECRET, {
     expiresIn: JWT_EXPIRES_IN,
   })
 
