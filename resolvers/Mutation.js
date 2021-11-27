@@ -86,26 +86,15 @@ const Mutation = {
 
   createAssessment: async (
     root,
-    { status, testId, userId, userInput },
+    { status, testId, userId },
     { currentUser }
   ) => {
     checkLoggedIn(currentUser)
 
-    let correct = 0
-
-    for (let res of userInput) {
-      let found = await Question.findById(res.questionId)
-        .select('correctOption')
-        .exec()
-      if (found.correctOption === res.answer) correct++
-    }
-
     const assessment = new Assessment({
-      score: calculateScore(correct, QUESTIONS_PER_SKILL),
       status,
       test: testId,
       user: userId,
-      userInput,
     })
 
     return assessment.save()
@@ -128,13 +117,28 @@ const Mutation = {
     }
   },
 
-  editAssessment: async (root, { id, status }, { currentUser }) => {
+  editAssessment: async (root, { id, status, userInput }, { currentUser }) => {
     checkAdmin(currentUser)
+
+    let correct = 0
+
+    for (let res of userInput) {
+      let found = await Question.findById(res.questionId)
+        .select('correctOption')
+        .exec()
+      if (found.correctOption === res.answer) correct++
+    }
 
     try {
       return await Assessment.findByIdAndUpdate(
         id,
-        { $set: { status } },
+        {
+          $set: {
+            status,
+            userInput,
+            score: calculateScore(correct, QUESTIONS_PER_SKILL),
+          },
+        },
         {
           new: true,
           runValidators: true,

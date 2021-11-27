@@ -88,13 +88,8 @@ type Mutation {
     skillId: ID!
   ): Question
   createTest(name: String!, skills: [ID!]!): Test
-  createAssessment(
-    status: Status!
-    testId: ID!
-    userId: ID!
-    userInput: [UserInput!]
-  ): Assessment
+  createAssessment(status: Status!, testId: ID!, userId: ID!): Assessment
   editTest(id: ID!, testName: String!, skills: [ID!]!): Test
   deleteTest(id: ID!): ID
-  editAssessment(id: ID!, status: Status!): Assessment
+  editAssessment(id: ID!, status: Status!, userInput: [UserInput!]): Assessment
 }
