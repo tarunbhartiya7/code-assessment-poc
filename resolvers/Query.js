@@ -1,7 +1,7 @@
 const Assessment = require('../models/assessment')
 const Test = require('../models/test')
 const Skill = require('../models/skill')
-const { checkAuthorized } = require('../utils')
+const { checkAuthorized, checkAuthenticated } = require('../utils')
 
 const Query = {
   me: (root, args, context) => {
@@ -46,7 +46,7 @@ const Query = {
     // }
   },
   getAllTests: (root, { testId }, { currentUser }) => {
-    checkAuthorized(currentUser)
+    checkAuthenticated(currentUser)
 
     if (testId) {
       return Test.find({ testId }).exec()

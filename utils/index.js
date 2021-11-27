@@ -36,6 +36,12 @@ const connectToDatabase = () => {
     })
 }
 
+const checkAuthenticated = (user) => {
+  if (!user) {
+    throw new AuthenticationError('Not authenticated')
+  }
+}
+
 const checkAuthorized = (user) => {
   if (!user) {
     throw new AuthenticationError('Not authenticated')
@@ -51,4 +57,5 @@ module.exports = {
   verifyToken,
   connectToDatabase,
   checkAuthorized,
+  checkAuthenticated,
 }
