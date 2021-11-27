@@ -91,6 +91,8 @@ const Mutation = {
   ) => {
     checkLoggedIn(currentUser)
 
+    await Test.findOneAndUpdate(testId, { $inc: { noOfApplicants: 1 } })
+
     const assessment = new Assessment({
       status,
       test: testId,
