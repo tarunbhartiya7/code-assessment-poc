@@ -16,7 +16,7 @@ enum QuestionType {
 }
 
 enum Status {
-  Not
+  New
   Started
   Completed
 }
@@ -86,4 +86,6 @@ type Mutation {
   ): Question
   createTest(name: String!, skills: [ID!]!): NewTest
   createAssessment(status: Status!, testId: ID!, userId: ID!): NewAssessment
+  editTest(id: ID!, testName: String!, skills: [ID!]!): NewTest
+  editAssessment(id: ID!, status: Status!): NewAssessment
 }

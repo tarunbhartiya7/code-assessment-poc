@@ -98,8 +98,16 @@ const Mutation = {
     return test.save()
   },
 
-  createAssessment: (root, { status, testId, userId }) => {
+  createAssessment: (root, { status, testId, userId }, { currentUser }) => {
     // TODO: write logic for calculating score
+    if (!currentUser) {
+      throw new AuthenticationError('Not authenticated')
+    }
+
+    if (currentUser.role !== 'Admin') {
+      throw new UserInputError('You do not have required permission!')
+    }
+
     const assessment = new Assessment({
       status,
       test: testId,
@@ -108,6 +116,52 @@ const Mutation = {
     })
 
     return assessment.save()
+  },
+
+  editTest: async (root, { id, testName, skills }, { currentUser }) => {
+    if (!currentUser) {
+      throw new AuthenticationError('Not authenticated')
+    }
+
+    if (currentUser.role !== 'Admin') {
+      throw new UserInputError('You do not have required permission!')
+    }
+
+    try {
+      return await Test.findByIdAndUpdate(
+        id,
+        { $set: { name: testName, skills } },
+        {
+          new: true,
+          runValidators: true,
+        }
+      )
+    } catch (error) {
+      throw new UserInputError('Test Not found')
+    }
+  },
+
+  editAssessment: async (root, { id, status }, { currentUser }) => {
+    if (!currentUser) {
+      throw new AuthenticationError('Not authenticated')
+    }
+
+    if (currentUser.role !== 'Admin') {
+      throw new UserInputError('You do not have required permission!')
+    }
+
+    try {
+      return await Assessment.findByIdAndUpdate(
+        id,
+        { $set: { status } },
+        {
+          new: true,
+          runValidators: true,
+        }
+      )
+    } catch (error) {
+      throw new UserInputError('Assessment Not found')
+    }
   },
 }
 

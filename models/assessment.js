@@ -9,7 +9,7 @@ const assessmentSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['Not Started', 'Started', 'Completed'],
+    enum: ['New', 'Started', 'Completed'],
     default: 'Not Started',
   },
   test: {
