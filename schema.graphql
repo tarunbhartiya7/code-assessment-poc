@@ -34,7 +34,6 @@ type Question {
   title: String!
   type: QuestionType
   options: [String!]
-  correctOption: String
 }
 
 type Skill {
