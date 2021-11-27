@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 
+const { QUESTIONS_PER_SKILL } = require('../utils/config')
+
 const skillSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -18,7 +20,10 @@ skillSchema.virtual('questions', {
 })
 
 skillSchema.pre(/^find/, function (next) {
-  this.populate('questions')
+  this.populate({
+    path: 'questions',
+    perDocumentLimit: QUESTIONS_PER_SKILL,
+  })
 
   next()
 })

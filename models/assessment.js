@@ -30,14 +30,7 @@ const assessmentSchema = new mongoose.Schema({
 })
 
 assessmentSchema.pre(/^find/, function (next) {
-  this.populate('user')
-    .populate('test')
-    .populate({
-      path: 'test',
-      populate: {
-        path: 'skills',
-      },
-    })
+  this.populate('user').populate('test')
 
   next()
 })
