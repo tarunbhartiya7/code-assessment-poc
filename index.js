@@ -5,7 +5,6 @@ const {
   AuthenticationError,
 } = require('apollo-server')
 const mongoose = require('mongoose')
-const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 
 const User = require('./models/user')
@@ -14,7 +13,8 @@ const Question = require('./models/question')
 const Assessment = require('./models/assessment')
 const Test = require('./models/test')
 const config = require('./utils/config')
-const { PORT, MONGODB_URI, JWT_SECRET } = config
+const { createToken, verifyToken, MONGODB_URI } = require('./utils')
+const { PORT } = config
 
 console.log('connecting to', MONGODB_URI)
 
@@ -203,7 +203,7 @@ const resolvers = {
       }
 
       return {
-        token: jwt.sign(userForToken, JWT_SECRET),
+        token: createToken(userForToken),
         name,
         email,
         role,
@@ -293,7 +293,7 @@ const server = new ApolloServer({
   context: async ({ req }) => {
     const auth = req ? req.headers.authorization : null
     if (auth && auth.startsWith('Bearer ')) {
-      const decodedToken = jwt.verify(auth.substring(7), JWT_SECRET)
+      const decodedToken = verifyToken(auth.substring(7))
       const currentUser = await User.findById(decodedToken.id)
       return { currentUser }
     }
