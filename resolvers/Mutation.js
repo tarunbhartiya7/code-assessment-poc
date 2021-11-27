@@ -6,7 +6,7 @@ const Skill = require('../models/skill')
 const Question = require('../models/question')
 const Assessment = require('../models/assessment')
 const Test = require('../models/test')
-const { createToken, checkAuthorized, checkAuthenticated } = require('../utils')
+const { createToken, checkAdmin, checkLoggedIn } = require('../utils')
 
 const Mutation = {
   createUser: (root, { name, email, password, role }) => {
@@ -45,7 +45,7 @@ const Mutation = {
   },
 
   createSkill: (root, { name, description }, { currentUser }) => {
-    checkAuthorized(currentUser)
+    checkAdmin(currentUser)
 
     const skill = new Skill({ name, description })
 
@@ -57,7 +57,7 @@ const Mutation = {
     { title, type, options, correctOption, skillId },
     { currentUser }
   ) => {
-    checkAuthorized(currentUser)
+    checkAdmin(currentUser)
 
     const question = new Question({
       title,
@@ -71,7 +71,7 @@ const Mutation = {
   },
 
   createTest: (root, { name, skills }, { currentUser }) => {
-    checkAuthorized(currentUser)
+    checkAdmin(currentUser)
 
     const test = new Test({ name, skills })
 
@@ -84,7 +84,7 @@ const Mutation = {
     { currentUser }
   ) => {
     // TODO: write logic for calculating score
-    checkAuthenticated(currentUser)
+    checkLoggedIn(currentUser)
 
     const assessment = new Assessment({
       status,
@@ -97,7 +97,7 @@ const Mutation = {
   },
 
   editTest: async (root, { id, testName, skills }, { currentUser }) => {
-    checkAuthorized(currentUser)
+    checkAdmin(currentUser)
 
     try {
       return await Test.findByIdAndUpdate(
@@ -114,7 +114,7 @@ const Mutation = {
   },
 
   editAssessment: async (root, { id, status }, { currentUser }) => {
-    checkAuthorized(currentUser)
+    checkAdmin(currentUser)
 
     try {
       return await Assessment.findByIdAndUpdate(

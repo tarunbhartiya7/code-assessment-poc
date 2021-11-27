@@ -1,7 +1,7 @@
 const Assessment = require('../models/assessment')
 const Test = require('../models/test')
 const Skill = require('../models/skill')
-const { checkAuthorized, checkAuthenticated } = require('../utils')
+const { checkAdmin, checkLoggedIn } = require('../utils')
 
 const Query = {
   me: (root, args, context) => {
@@ -12,7 +12,7 @@ const Query = {
     { status, score, page, limit },
     { currentUser }
   ) => {
-    checkAuthorized(currentUser)
+    checkAdmin(currentUser)
 
     if (page && limit) {
       let p = page * 1 || 1
@@ -46,7 +46,7 @@ const Query = {
     // }
   },
   getAllTests: (root, { testId }, { currentUser }) => {
-    checkAuthenticated(currentUser)
+    checkLoggedIn(currentUser)
 
     if (testId) {
       return Test.find({ testId }).exec()
@@ -56,7 +56,7 @@ const Query = {
   },
 
   getAllSkills: (root, { skillId }, { currentUser }) => {
-    checkAuthorized(currentUser)
+    checkAdmin(currentUser)
 
     if (skillId) {
       return Skill.find({ skillId }).exec()

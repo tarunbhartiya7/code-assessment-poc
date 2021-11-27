@@ -36,13 +36,13 @@ const connectToDatabase = () => {
     })
 }
 
-const checkAuthenticated = (user) => {
+const checkLoggedIn = (user) => {
   if (!user) {
     throw new AuthenticationError('Not authenticated')
   }
 }
 
-const checkAuthorized = (user) => {
+const checkAdmin = (user) => {
   if (!user) {
     throw new AuthenticationError('Not authenticated')
   }
@@ -56,6 +56,6 @@ module.exports = {
   createToken,
   verifyToken,
   connectToDatabase,
-  checkAuthorized,
-  checkAuthenticated,
+  checkLoggedIn,
+  checkAdmin,
 }
