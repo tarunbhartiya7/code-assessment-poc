@@ -144,6 +144,17 @@ const Mutation = {
       throw new UserInputError('Assessment Not found')
     }
   },
+
+  deleteTest: async (root, { id }, { currentUser }) => {
+    checkAdmin(currentUser)
+
+    try {
+      await Test.findByIdAndDelete(id)
+      return id
+    } catch (error) {
+      throw new UserInputError('Test Not found')
+    }
+  },
 }
 
 module.exports = Mutation

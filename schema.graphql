@@ -94,5 +94,6 @@ type Mutation {
     userInput: [UserInput!]
   ): Assessment
   editTest(id: ID!, testName: String!, skills: [ID!]!): Test
+  deleteTest(id: ID!): ID
   editAssessment(id: ID!, status: Status!): Assessment
 }
