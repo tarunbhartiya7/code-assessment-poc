@@ -53,6 +53,8 @@ type Test {
 type Assessment {
   score: Int
   status: Status!
+  test: Test
+  user: User
 }
 
 input UserInput {
