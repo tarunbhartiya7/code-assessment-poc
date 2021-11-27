@@ -7,6 +7,7 @@ const DATABASE_URL = process.env.DATABASE_URL
 const DATABASE_USERNAME = process.env.DATABASE_USERNAME
 const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD
 const DATABASE_NAME = process.env.DATABASE_NAME
+const QUESTIONS_PER_SKILL = 10
 
 module.exports = {
   PORT,
@@ -16,4 +17,5 @@ module.exports = {
   DATABASE_USERNAME,
   DATABASE_PASSWORD,
   DATABASE_NAME,
+  QUESTIONS_PER_SKILL,
 }

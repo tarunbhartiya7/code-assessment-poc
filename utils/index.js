@@ -52,10 +52,20 @@ const checkAdmin = (user) => {
   }
 }
 
+const calculateScore = (correct, noOfQuestions) => {
+  const inPercent = (correct * 100) / noOfQuestions
+  if (inPercent > 90) return 5
+  else if (inPercent > 80) return 4
+  else if (inPercent > 60) return 3
+  else if (inPercent > 40) return 2
+  else return 1
+}
+
 module.exports = {
   createToken,
   verifyToken,
   connectToDatabase,
   checkLoggedIn,
   checkAdmin,
+  calculateScore,
 }

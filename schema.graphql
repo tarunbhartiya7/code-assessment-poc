@@ -51,6 +51,7 @@ type Test {
 }
 
 type Assessment {
+  id: ID!
   score: Int
   status: Status!
   test: Test

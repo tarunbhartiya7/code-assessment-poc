@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const randomstring = require('randomstring')
 
+const { QUESTIONS_PER_SKILL } = require('../utils/config')
+
 const testSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -26,7 +28,7 @@ testSchema.pre(/^find/, function (next) {
     path: 'skills',
     populate: {
       path: 'questions',
-      perDocumentLimit: 10,
+      perDocumentLimit: QUESTIONS_PER_SKILL,
     },
   })
 

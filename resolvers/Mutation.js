@@ -6,7 +6,13 @@ const Skill = require('../models/skill')
 const Question = require('../models/question')
 const Assessment = require('../models/assessment')
 const Test = require('../models/test')
-const { createToken, checkAdmin, checkLoggedIn } = require('../utils')
+const {
+  createToken,
+  checkAdmin,
+  checkLoggedIn,
+  calculateScore,
+} = require('../utils')
+const { QUESTIONS_PER_SKILL } = require('../utils/config')
 
 const Mutation = {
   createUser: (root, { name, email, password, role }) => {
@@ -78,15 +84,24 @@ const Mutation = {
     return test.save()
   },
 
-  createAssessment: (
+  createAssessment: async (
     root,
     { status, testId, userId, userInput },
     { currentUser }
   ) => {
-    // TODO: write logic for calculating score
     checkLoggedIn(currentUser)
 
+    let correct = 0
+
+    for (let res of userInput) {
+      let found = await Question.findById(res.questionId)
+        .select('correctOption')
+        .exec()
+      if (found.correctOption === res.answer) correct++
+    }
+
     const assessment = new Assessment({
+      score: calculateScore(correct, QUESTIONS_PER_SKILL),
       status,
       test: testId,
       user: userId,
