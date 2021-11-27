@@ -1,25 +1,15 @@
 const { ApolloServer } = require('apollo-server')
 const { readFileSync } = require('fs')
-const mongoose = require('mongoose')
 
 const { Query, Mutation } = require('./resolvers')
 const User = require('./models/user')
 const config = require('./utils/config')
-const { verifyToken, MONGODB_URI } = require('./utils')
+const { verifyToken, connectToDatabase } = require('./utils')
 const { PORT } = config
 
 const typeDefs = readFileSync('./schema.graphql').toString('utf-8')
 
-console.log('connecting to', MONGODB_URI)
-
-mongoose
-  .connect(MONGODB_URI)
-  .then(() => {
-    console.log('connected to MongoDB')
-  })
-  .catch((error) => {
-    console.log('error connecting to MongoDB:', error.message)
-  })
+connectToDatabase()
 
 const server = new ApolloServer({
   typeDefs,
